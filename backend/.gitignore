@@ -1,0 +1,16 @@
+# Composer dependencies
+/vendor/
+
+# Logs and temp files
+*.log
+*.cache
+*.tmp
+
+# Apache / PHPStorm / MacOS specific
+/.htaccess
+/.idea/
+/.vscode/
+.DS_Store
+
+# Ignore environment variables
+.env

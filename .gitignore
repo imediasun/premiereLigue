@@ -1,0 +1,12 @@
+# Docker
+/docker-compose.override.yml
+/docker-compose.yml
+/.env
+
+# Ignore build directories
+/build
+/dist
+
+# OS generated files
+Thumbs.db
+.DS_Store
