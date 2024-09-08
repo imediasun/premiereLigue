@@ -58,3 +58,6 @@ install-frontend: ## Install dependecy before run in watcher mode
 
 up-php: ## Create and start containers
 	docker-compose up -d php-fpm
+
+test:
+	docker-compose exec php-fpm vendor/bin/phpunit --configuration phpunit.xml
