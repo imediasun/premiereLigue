@@ -3,4 +3,5 @@
 3) git submodule update --init --recursive
 4) make setup (Wait some time because of the pecl :( )
 5) open localhost:3000 in browser
-6) Enjoy!
+6) make test
+7) Enjoy!
