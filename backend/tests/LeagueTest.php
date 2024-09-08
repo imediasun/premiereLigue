@@ -1,8 +1,10 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+namespace backend\tests;
+
 use App\Model\League;
 use App\Model\Team;
+use PHPUnit\Framework\TestCase;
 use Redis;
 
 class LeagueTest extends TestCase
