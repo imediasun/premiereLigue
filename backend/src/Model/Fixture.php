@@ -1,5 +1,7 @@
 <?php
 
+use App\Model\Team;
+
 class Fixture {
     private $team1;
     private $team2;
@@ -13,12 +15,12 @@ class Fixture {
         $this->score2 = $score2;
     }
 
-    // Возвращает результат матча
+    // Returns the result of the match
     public function getResult() {
         return "{$this->team1->getName()} {$this->score1} - {$this->score2} {$this->team2->getName()}";
     }
 
-    // Обновляет статистику команд после матча
+    // Updates team statistics after the match
     public function updateTeamStatistics() {
         $this->team1->addMatchResult($this->score1, $this->score2);
         $this->team2->addMatchResult($this->score2, $this->score1);

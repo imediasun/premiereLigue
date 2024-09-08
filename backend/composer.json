@@ -1,11 +1,17 @@
 {
   "autoload": {
     "psr-4": {
-      "App\\": "src/"
+      "App\\": "src/",
+      "Service\\": "src/Service/",
+      "Generated\\": "src/Service/Generated",
+      "GPBMetadata\\": "src/Service/GPBMetadata/"
     }
   },
   "require": {
     "phpunit/phpunit": "^9.0",
-    "ext-redis": "*"
+    "ext-redis": "*",
+    "ext-grpc": "*",
+    "stanley-cheung/protobuf-php": "v0.6",
+    "grpc/grpc": "^1.57"
   }
 }

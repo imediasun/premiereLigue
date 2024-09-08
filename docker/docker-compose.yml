@@ -18,9 +18,27 @@ services:
       - "./php-fpm/php.ini:/usr/local/etc/php/conf.d/custom.ini"
     depends_on:
       - redis
+      - grpc-ai
     restart: unless-stopped
     expose:
       - 9000
+    networks:
+      - app-network
+
+    # Go microservice (AI)
+  grpc-ai:
+    container_name: grpc-ai
+    build:
+      context: ../ai_service  # Assuming Go microservice code is in the ai_service folder
+      dockerfile: Dockerfile
+      args:
+        progress: plain
+    volumes:
+      - ../ai_service :/app
+    ports:
+      - "50051:50051"  # Expose gRPC port
+    expose:
+      - 50051
     networks:
       - app-network
 

@@ -41,7 +41,12 @@
       <path value="$PROJECT_DIR$/backend/vendor/sebastian/code-unit" />
       <path value="$PROJECT_DIR$/backend/vendor/sebastian/code-unit-reverse-lookup" />
       <path value="$PROJECT_DIR$/backend/vendor/sebastian/resource-operations" />
+      <path value="$PROJECT_DIR$/backend/vendor/stanley-cheung/protobuf-php" />
+      <path value="$PROJECT_DIR$/backend/vendor/grpc/grpc" />
     </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.1">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
