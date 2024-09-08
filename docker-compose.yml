@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ./
+      dockerfile: ./docker/php-fpm/Dockerfile
+    environment:
+      XDEBUG_SESSION: 1
+      #XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      XDEBUG_CONFIG: "client_host=host.docker.internal client_port=9003"
+      PHP_IDE_CONFIG: "serverName=localhost"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./backend:/var/www/backend
+      - "./php-fpm/php.ini:/usr/local/etc/php/conf.d/custom.ini"
+    depends_on:
+      - redis
+      - grpc-ai
+    restart: unless-stopped
+    expose:
+      - 9000
+    networks:
+      - app-network
+
+    # Go microservice (AI)
+  grpc-ai:
+    container_name: grpc-ai
+    build:
+      context: ./ai_service  # Assuming Go microservice code is in the ai_service folder
+      dockerfile: Dockerfile
+      args:
+        progress: plain
+    volumes:
+      - ./ai_service :/app
+    ports:
+      - "50051:50051"  # Expose gRPC port
+    expose:
+      - 50051
+    networks:
+      - app-network
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis-league
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: ./
+      dockerfile: ./docker/nginx/Dockerfile
+    #image: nginx
+    container_name: chess-nginx
+    hostname: chess-nginx
+    healthcheck:
+      test: [ "CMD", "service", "nginx", "status" ]
+      timeout: 10s
+    volumes:
+      - ./backend:/var/www/backend
+      - ./backend.front:/var/www/frontend
+      - ./docker/nginx/conf.d:/etc/nginx/sites-enabled
+      - ./docker/nginx/logs:/var/log/nginx
+    ports:
+      - 80:80
+      - 3030:3030
+    expose:
+      - 80
+    depends_on:
+      - php-fpm
+      - frontend
+      - redis
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./docker/frontend/Dockerfile
+    container_name: react-league
+    volumes:
+      - ./frontend:/var/www/frontend
+    ports:
+      - 8080:8080
+      - 3000:3000
+    expose:
+      - 8080
+      - 3000
+    depends_on:
+      - php-fpm
+      - redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
