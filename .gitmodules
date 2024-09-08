@@ -1,0 +1,3 @@
+[submodule "ai_service"]
+	path = ai_service
+	url = git@github.com/imediasun/ai_service

@@ -9,7 +9,7 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Запрос, содержащий список команд
+ * A request containing a list of commands
  *
  * Generated from protobuf message <code>ai_service.TeamsRequest</code>
  */

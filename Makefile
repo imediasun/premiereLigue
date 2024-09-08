@@ -57,4 +57,7 @@ install-frontend: ## Install dependecy before run in watcher mode
 	docker compose run --rm --no-deps frontend yarn install
 
 up-php: ## Create and start containers
-	docker compose up -d php-fpm
+	docker-compose up -d php-fpm
+
+test:
+	docker-compose exec php-fpm vendor/bin/phpunit --configuration phpunit.xml
