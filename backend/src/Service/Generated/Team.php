@@ -9,7 +9,7 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Структура команды
+ * Team structure
  *
  * Generated from protobuf message <code>ai_service.Team</code>
  */

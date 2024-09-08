@@ -9,7 +9,7 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Ответ с предсказаниями
+ * Answer with predictions
  *
  * Generated from protobuf message <code>ai_service.PredictionsResponse</code>
  */
