@@ -9,19 +9,30 @@ down: #stop containers
 rebuild: #rebuild all
 	@docker compose down && docker compose up -d --build
 
+# Start Go AI microservice container
+up-go-ai:
+	docker-compose up -d grpc-ai
 
-connect_back: #connect to laravel application
-	@docker exec -it ]php-fpm bash
+connect_back: #connect to php application
+	@docker exec -it php-fpm bash
 
 install: install-php install-frontend
+
+# Generate gRPC PHP classes inside the php-fpm container
+generate-grpc:
+	docker-compose exec php-fpm protoc \
+        --proto_path=/var/www/backend/ai_service \
+        --php_out=/var/www/backend/src/Service \
+        /var/www/backend/ai_service/ai_service.proto
 
 setup:  ## Create and start containers
 	$(MAKE) up-redis
 	$(MAKE) install
 	$(MAKE) up-php
 	$(MAKE) up-frontend
-	#$(MAKE) init
+	$(MAKE) up-go-ai
 	$(MAKE) up-nginx
+	$(MAKE) generate-grpc
 
 up-mysql: ## Create and start containers
 	docker compose up -d mysql

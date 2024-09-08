@@ -1,41 +1,44 @@
 <?php
+// This class handles the routing logic for the API.
+// Routes requests to appropriate controllers based on the URI.
+
+namespace App;
+
+use App\Controller\LeagueController;
 
 class Router {
-    private $routes = [
-        'GET' => [],
-        'POST' => []
+    private $getRoutes = [
+        '/api/table' => [LeagueController::class, 'getTable'],
+        '/api/play' => [LeagueController::class, 'playNextRound'],
     ];
 
-    public function get($route, $controllerAction) {
-        $this->routes['GET'][$route] = $controllerAction;
-    }
-
-    public function post($route, $controllerAction) {
-        $this->routes['POST'][$route] = $controllerAction;
-    }
+    private $postRoutes = [
+        '/api/reset' => [LeagueController::class, 'resetLeague'],
+    ];
 
     public function run() {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
-        $requestUri = $this->cleanUri($_SERVER['REQUEST_URI']);
+        // Determine the request method and URI
+        $method = $_SERVER['REQUEST_METHOD'];
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        $requestUri = explode('?', $requestUri)[0];
-
-        if (isset($this->routes[$requestMethod][$requestUri])) {
-            list($controller, $action) = explode('@', $this->routes[$requestMethod][$requestUri]);
-            if (class_exists($controller) && method_exists($controller, $action)) {
-                $controllerInstance = new $controller();
-                $controllerInstance->$action();
-            } else {
-                http_response_code(500);
-                echo "Controller or method not found.";
-            }
-        } else {
-            http_response_code(404);
-            echo "Page not found.";
+        // Route GET requests
+        if ($method === 'GET' && isset($this->getRoutes[$uri])) {
+            $controllerAction = $this->getRoutes[$uri];
+            [$controller, $action] = $controllerAction;
+            (new $controller())->$action();
+            return;
         }
-    }
 
-    private function cleanUri($uri) {
-        return rtrim($uri, '/'); // Удаляем завершающие слеши
+        // Route POST requests
+        if ($method === 'POST' && isset($this->postRoutes[$uri])) {
+            $controllerAction = $this->postRoutes[$uri];
+            [$controller, $action] = $controllerAction;
+            (new $controller())->$action();
+            return;
+        }
+
+        // If no route is found, return 404
+        http_response_code(404);
+        echo "Page not found.";
     }
 }

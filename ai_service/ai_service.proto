@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package ai_service;
+
+option go_package = "github.com/imediasun/ai_service/generated";
+option php_namespace = "Generated";
+
+
+service PredictionService {
+    rpc GetChampionshipPredictions (TeamsRequest) returns (PredictionsResponse);
+}
+
+// A request containing a list of commands
+message TeamsRequest {
+    repeated Team teams = 1;
+}
+
+// Answer with predictions
+message PredictionsResponse {
+    repeated Prediction predictions = 1;
+}
+
+// Team structure
+message Team {
+    string name = 1;
+    int32 points = 2;
+}
+
+// Structure of prediction
+message Prediction {
+    string team = 1;
+    string prediction = 2;
+}
